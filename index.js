@@ -18,10 +18,14 @@ admin.initializeApp({
     databaseURL: process.env.FIRE_DB
 });
 
-
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
     const bookings = client.db("burjAlArab").collection("bookings");
+    
+    app.get('/', (req, res) => {
+        res.send('server is up and running')
+    })
+    
     app.post('/addBooking', (req, res) => {
         const newBooking = req.body;
         bookings.insertOne(newBooking)
@@ -33,7 +37,6 @@ client.connect(err => {
     // perform actions on the collection object
     console.log("Database connection successfully!");
     //   client.close();
-
 
     app.get('/bookings', (req, res) => {
         const bearer = req.headers.authorization;
